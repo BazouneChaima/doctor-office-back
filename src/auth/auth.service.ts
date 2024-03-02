@@ -26,7 +26,6 @@ export class AuthService {
       if (!pwMatch) {
         throw new BadRequestException('Invalide Credentials !');
       }
-      console.log('test' + JSON.stringify(user));
       return this.signToken(user.id, user.email);
     } catch (e) {
       throw new BadRequestException('Invalide Credentials !');
