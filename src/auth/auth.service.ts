@@ -8,6 +8,7 @@ import { ConfigService } from '@nestjs/config';
 
 @Injectable()
 export class AuthService {
+  
   constructor(
     private userService: UserService,
     private jwtService: JwtService,
@@ -40,7 +41,7 @@ export class AuthService {
     return this.signToken(user.id, user.email);
   }
 
-  async logout() {}
+
 
   async signToken(userId: number, email: string)  : Promise<object>{
     const payload = {

@@ -25,4 +25,11 @@ export class UserService {
       throw new BadRequestException();
     }
   }
+  async findAll (): Promise<User[]> {
+    try {
+      return await this.prisma.user.findMany();
+    } catch (e) {
+      throw new BadRequestException();
+    }
+  }
 }

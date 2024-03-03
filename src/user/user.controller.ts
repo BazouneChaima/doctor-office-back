@@ -8,26 +8,32 @@ import { JwtGuard } from '../auth/guards';
 import { GetUser } from 'src/auth/decorator';
 import { User } from '@prisma/client';
 
-@Controller('user')
+@Controller('users')
+@UseGuards(JwtGuard)
 export class UserController {
     constructor (private userService : UserService){}
     
+    // @Get()
+    // findOne(@Body() user : findUser){ 
+    //     return this.userService.findOneByEmail(user.email)
+    // }
+
     @Get()
-    findOne(@Body() user : findUser){ 
-        return this.userService.findOneByEmail(user.email)
+    findAll(){ 
+        return this.userService.findAll()
     }
 
-    @UseGuards(JwtGuard)
+    
     @Get('me')
     getMe(@GetUser() user : User) {
         //console.log(req)
         return user;
     }
 
-    @Post('create')
-    create (@Body() userDto : createUser){ 
-        return this.userService.create(userDto)
-    }
+    // @Post('create')
+    // create (@Body() userDto : createUser){ 
+    //     return this.userService.create(userDto)
+    // }
 
  
 }
