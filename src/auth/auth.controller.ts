@@ -3,6 +3,7 @@ import {
   Body,
   Controller,
   Get,
+  HttpCode,
   Post,
   Req,
 } from '@nestjs/common';
@@ -13,10 +14,10 @@ import { Request } from 'express';
 @Controller('auth')
 export class AuthController {
   constructor(private authService: AuthService) {}
-  @Get('login')
+  @HttpCode(200)
+  @Post('login')
   async login(@Body() userDto: findUser) {
-    //throw new BadRequestException("ts")
-    return await this.authService.login(userDto);
+    return await this.authService.login(userDto);  
   }
 
   @Post('signup')

@@ -13,12 +13,82 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-
-model User { 
-  id Int @default(autoincrement()) @id
-  email String @unique
-  username String @unique
+model User {
+  id        Int      @id @default(autoincrement())
+  email     String   @unique
+  username  String   @unique
   firstname String
-  lastname String
-  password String 
+  lastname  String
+  password  String
+  role      Role?
+  doctor    Doctor?
+  patient   Patient?
+}
+
+model Doctor {
+  id               Int              @id @default(autoincrement())
+  name             String
+  email            String           @unique
+  password         String
+  specialization   String
+  appointments     Appointment[]
+  prescriptions    Prescription[]
+  userId           Int              @unique
+  user             User             @relation(fields: [userId], references: [id])
+  medicalHistories MedicalHistory[]
+}
+
+model Patient {
+  id               Int              @id @default(autoincrement())
+  name             String
+  email            String           @unique
+  password         String
+  dateOfBirth      DateTime
+  address          String
+  userId           Int              @unique
+  user             User             @relation(fields: [userId], references: [id])
+  appointments     Appointment[]
+  prescriptions    Prescription[]
+  medicalHistories MedicalHistory[]
+}
+
+model Appointment {
+  id        Int      @id @default(autoincrement())
+  patientId Int
+  doctorId  Int
+  date      DateTime
+  time      DateTime
+  reason    String
+  patient   Patient  @relation(fields: [patientId], references: [id])
+  doctor    Doctor   @relation(fields: [doctorId], references: [id])
+}
+
+model Prescription {
+  id         Int      @id @default(autoincrement())
+  patientId  Int
+  doctorId   Int
+  medication String
+  dosage     String
+  frequency  String
+  startDate  DateTime
+  endDate    DateTime
+  patient    Patient  @relation(fields: [patientId], references: [id])
+  doctor     Doctor   @relation(fields: [doctorId], references: [id])
+}
+
+model MedicalHistory {
+  id        Int     @id @default(autoincrement())
+  patientId Int
+  doctorId  Int
+  diagnosis String
+  treatment String
+  notes     String
+  patient   Patient @relation(fields: [patientId], references: [id])
+  doctor    Doctor  @relation(fields: [doctorId], references: [id])
+}
+
+enum Role {
+  DOCTOR
+  ADMIN
+  PATIENT
 }
