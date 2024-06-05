@@ -13,8 +13,10 @@ export class UserService {
 
   async create(user: createUser): Promise<User> {
     try {
+      console.log({user})
       return await this.prisma.user.create({ data: { ...user } });
     } catch (e) {
+      console.log('insde user'+e)
       throw new ForbiddenException();
     }
   }

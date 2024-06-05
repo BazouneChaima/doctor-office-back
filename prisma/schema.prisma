@@ -29,7 +29,7 @@ model Doctor {
   id               Int              @id @default(autoincrement())
   name             String
   email            String           @unique
-  password         String
+  password         String?
   specialization   String
   appointments     Appointment[]
   prescriptions    Prescription[]
@@ -55,12 +55,13 @@ model Patient {
 model Appointment {
   id        Int      @id @default(autoincrement())
   patientId Int
-  doctorId  Int
+  doctorId  Int?
   date      DateTime
   time      DateTime
   reason    String
-  patient   Patient  @relation(fields: [patientId], references: [id])
-  doctor    Doctor   @relation(fields: [doctorId], references: [id])
+  active    String?
+  patient   Patient?  @relation(fields: [patientId], references: [id])
+  doctor    Doctor?   @relation(fields: [doctorId], references: [id])
 }
 
 model Prescription {

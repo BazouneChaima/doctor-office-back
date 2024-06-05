@@ -56,6 +56,16 @@ export class AuthService {
     return new ApiResponse('success', { user: user, access_token: token });
   }
 
+  async create(userDto: createUser): Promise<{user , token}> {
+    //hash the password
+    userDto.password = await argon.hash(userDto.password);
+    const user = await this.userService.create(userDto);
+    
+    const token = await this.signToken(user.id, user.email);
+    return {user, token}
+  }
+  
+
   async signToken(userId: number, email: string): Promise<string> {
     const payload = {
       sub: userId,
